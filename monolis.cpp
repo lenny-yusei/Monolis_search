@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <vector>
-#include "monolis.h"
+#include "monolis.hpp"
 
 Monolis::Monolis(int h, int w, int c)
 {
@@ -38,7 +38,7 @@ Monolis::Monolis(Monolis &mc)
 }
 Monolis::~Monolis()
 {
-    std::cout << "delete" << std::endl;
+    // std::cout << "delete monolis" << std::endl;
     delete [] _board;
 }
 
@@ -46,7 +46,7 @@ void Monolis::show_board()
 {
     for (int i = 0; i < height(); i++) {
         for (int j = 0; j < width(); j++) {
-            std::cout << board(i, j);
+            std::cout << block(i, j);
         }
         std::cout << std::endl;
     }
@@ -54,14 +54,16 @@ void Monolis::show_board()
 
 void Monolis::break_from(int i, int j)
 {
+    // Set pointers of changing blocks.
     std::vector<int*> vec;
-    if (i > 0 && board(i, j) == board(i - 1, j) ||
-        i < height() - 1 && board(i, j) == board(i + 1, j) ||
-        j > 0 && board(i, j) == board(i, j - 1) ||
-        j < width() - 1 && board(i, j) == board(i, j + 1) ) {
-            break_at(i, j, board(i, j), &vec);
+    if (i > 0 && block(i, j) == block(i - 1, j) ||
+        i < height() - 1 && block(i, j) == block(i + 1, j) ||
+        j > 0 && block(i, j) == block(i, j - 1) ||
+        j < width() - 1 && block(i, j) == block(i, j + 1) ) {
+            break_at(i, j, block(i, j), &vec);
     }
-    std::cout << vec.size() << std::endl;
+    //std::cout << vec.size() << std::endl;
+    // Remove bit from changing blocks and then change those color to next color.
     for (i = 0; i < vec.size(); i++) {
         int* p = vec[i];
         *p = *p & ~BIT_E;
@@ -72,8 +74,8 @@ void Monolis::break_from(int i, int j)
 
 void Monolis::break_at(int i, int j, int color, std::vector<int*> *vec)
 {
-    if (board(i, j) == color) {
-        *board_p(i, j) = 0;
+    if (block(i, j) == color) {
+        *block_p(i, j) = 0;
         if (i > 0)
             break_at(i-1, j, color, vec);
         if (i < height() - 1)
@@ -82,9 +84,9 @@ void Monolis::break_at(int i, int j, int color, std::vector<int*> *vec)
             break_at(i, j-1, color, vec);
         if (j < width() - 1)
             break_at(i, j+1, color, vec);
-    } else if (!(board(i, j) == 0 || (board(i, j) & BIT_E) != 0)) {
-        *board_p(i, j) |= BIT_E;
-        vec->push_back(board_p(i, j));
+    } else if (!(block(i, j) == 0 || (block(i, j) & BIT_E) != 0)) {
+        *block_p(i, j) |= BIT_E;
+        vec->push_back(block_p(i, j));
     }
 }
 
