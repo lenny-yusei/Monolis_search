@@ -1,3 +1,6 @@
+#ifndef _MONO_BESTNODE_HPP_
+#define _MONO_BESTNODE_HPP_
+
 #include <vector>
 
 class MonoBestNode {
@@ -8,3 +11,5 @@ public:
     ~MonoBestNode();
     void update(int n, std::vector<int> &move);
 };
+
+#endif

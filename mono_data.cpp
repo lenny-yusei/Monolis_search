@@ -24,6 +24,11 @@ MonoData::~MonoData()
     delete [] data;
 }
 
+int MonoData::_height = 0;
+int MonoData::_width = 0;
+int MonoData::_board_size = 0;
+int MonoData::_num_color = 0;
+
 /* (i, j) must conform 0 <= i < height, 0 <= j < width.*/
 bool MonoData::breakable(int i, int j)
 {
@@ -64,3 +69,10 @@ void MonoData::break_at(int i, int j, int color, std::vector<char*> &vec)
         vec.push_back(block_p(i, j));
     }
 }
+
+/*/
+int main()
+{
+
+}
+/*/

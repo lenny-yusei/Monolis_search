@@ -1,3 +1,6 @@
+#ifndef _MONO_SEARCHNODE_HPP_
+#define _MONO_SEARCHNODE_HPP_
+
 #include <vector>
 #include <list>
 #include "mono_data.hpp"
@@ -10,6 +13,7 @@ public:
     static std::vector<MonoSearchNode*> work_queue;
     MonoData* data;
     MonoBestNode* best;
+
     MonoSearchNode(Monolis& mono);
     MonoSearchNode(MonoData* data, MonoBestNode* best);
     ~MonoSearchNode();
@@ -17,3 +21,5 @@ public:
     static MonoSearchNode* get_worknode();
     static bool haswork() { return !work_queue.empty(); }
 };
+
+#endif

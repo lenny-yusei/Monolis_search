@@ -90,7 +90,7 @@ void Monolis::break_at(int i, int j, int color, std::vector<int*> *vec)
     }
 }
 
-/*
+/*/
 int main(void)
 {
     int a, b;
@@ -108,4 +108,4 @@ int main(void)
     Monolis m3(10, 10, 3);
     return 0;
 }
-*/
+/*/

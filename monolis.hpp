@@ -1,3 +1,6 @@
+#ifndef _MONOLIS_HPP_
+#define _MONOLIS_HPP_
+
 #define BIT_E 0x10      // Use for break block, put a mark on changing block.
 #include <vector>
 
@@ -29,3 +32,5 @@ private:
     inline int* block_p(int i, int j) { return _board + i * width() + j; }
     void break_at(int i, int j, int color, std::vector<int*> *vec);
 };
+
+#endif

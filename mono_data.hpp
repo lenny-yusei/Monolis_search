@@ -1,3 +1,6 @@
+#ifndef _MONO_DATA_HPP_
+#define _MONO_DATA_HPP_
+
 #include "monolis.hpp"
 
 class MonoData {
@@ -24,3 +27,5 @@ private:
     void break_at(int i, int j, int color, std::vector<char*> &vec);
     inline char* block_p(int i, int j) { return data + i * width() + j; }
 };
+
+#endif
