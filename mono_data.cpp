@@ -14,10 +14,10 @@ MonoData::MonoData(Monolis &m)
         data[i] = (char)m.block(i);
     }
 }
-MonoData::MonoData(MonoData &m)
+MonoData::MonoData(MonoData* m)
 {
     data = new char[_board_size];
-    std::memcpy(data, m.data, sizeof data);
+    std::copy(m->data, m->data + _board_size, data);
 }
 MonoData::~MonoData()
 {
@@ -33,9 +33,9 @@ int MonoData::_num_color = 0;
 bool MonoData::breakable(int i, int j)
 {
     return j > 0 && block(i, j) == block(i, j - 1) ||
-           j < height() - 1 && block(i, j) == block(i, j + 1) ||
+           j < width() - 1 && block(i, j) == block(i, j + 1) ||
            i > 0 && block(i, j) == block(i - 1, j) ||
-           i < width() - 1 && block(i, j) == block(i + 1, j);
+           i < height() - 1 && block(i, j) == block(i + 1, j);
 }
 
 /* It must be breakable(i, j) == true. */
@@ -56,14 +56,14 @@ void MonoData::break_at(int i, int j, int color, std::vector<char*> &vec)
 {
     if (block(i, j) == color) {
         *block_p(i, j) = 0;
-        if (i > 0)
-            break_at(i-1, j, color, vec);
-        if (i < height() - 1)
-            break_at(i+1, j, color, vec);
         if (j > 0)
-            break_at(i, j-1, color, vec);
+            break_at(i, j - 1, color, vec);
         if (j < width() - 1)
-            break_at(i, j+1, color, vec);
+            break_at(i, j + 1, color, vec);
+        if (i > 0)
+            break_at(i - 1, j, color, vec);
+        if (i < height() - 1)
+            break_at(i + 1, j, color, vec);
     } else if (block(i, j) != 0 && (block(i, j) & BIT_E) == 0) {
         *block_p(i, j) |= BIT_E;
         vec.push_back(block_p(i, j));

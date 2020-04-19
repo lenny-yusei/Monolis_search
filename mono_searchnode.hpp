@@ -12,14 +12,20 @@ class MonoSearchNode {
 public:
     static std::vector<MonoSearchNode*> work_queue;
     MonoData* data;
+    std::vector<int> move;
     MonoBestNode* best;
+    static MonoBestNode* the_best;
 
     MonoSearchNode(Monolis& mono);
-    MonoSearchNode(MonoData* data, MonoBestNode* best);
+    MonoSearchNode(MonoData* data, std::vector<int> move, MonoBestNode* best);
     ~MonoSearchNode();
     void search();
     static MonoSearchNode* get_worknode();
     static bool haswork() { return !work_queue.empty(); }
+private:
+    void put_breakable_num(int breakable_num[], int i, int j, int start_p);
+    inline int blockpos(int i, int j) { return i * data->height() + j; }
+    inline int* data_p(int* d, int i, int j) { return d + i * data->height() + j; }
 };
 
 #endif

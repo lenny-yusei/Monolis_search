@@ -6,7 +6,7 @@
 class MonoData {
 public:
     MonoData(Monolis&);
-    MonoData(MonoData&);
+    MonoData(MonoData*);
     ~MonoData();
     static int _height;
     static int _width;
