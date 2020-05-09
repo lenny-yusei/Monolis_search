@@ -1,29 +1,49 @@
 /* monosearch.cpp */
 #include <iostream>
+#include <ctime>
 #include "monolis.hpp"
+#include "mono_move.hpp"
 #include "mono_searchnode.hpp"
+#include "mono_bestnode.hpp"
+
+class MonoSearch {
+public:
+    MonoSearch(Monolis& mono) : mono_base(mono) { }
+
+    void start_search() {
+        clock_t start = clock();
+
+        MonoSearchNode::init(mono_base);
+        MonoSearchNode::start_search();
+
+        clock_t end = clock();
+        m_search_time = 1000.0 * (end - start) / CLOCKS_PER_SEC;
+    }
+
+    double search_time() { return m_search_time; }
+    MonoBestNode* best() { return MonoSearchNode::result(); }
+private:
+    Monolis mono_base;
+    double m_search_time;
+};
 
 int main()
 {
-    Monolis mono(5, 5, 3);
+    Monolis mono(4, 4, 3);
     mono.show_board();
-    MonoSearchNode msnode_base(mono);
-    MonoSearchNode* node;
+    
+    MonoSearch ms(mono);
+    ms.start_search();
 
-    while (MonoSearchNode::haswork()) {
-        node = MonoSearchNode::get_worknode();
-        node->search();
-        delete node;
-        std::cout << "test" << std::endl;
-    }
+    std::cout << "search time: " <<  ms.search_time() << "ms" << std::endl;
+    ms.best()->show();
 
-    MonoSearchNode::the_best->show();
-
-    std::vector<int> &best_move = MonoSearchNode::the_best->best_move;
+    std::vector<MonoPoint> best_move = ms.best()->best_move.move;
     for (int i = 0; i < best_move.size(); i++) {
-        mono.break_from(best_move[i] / mono.width(), best_move[i] % mono.width());
+        mono.break_from(best_move[i]);
+        mono.show_board();
+        std::cout << std::endl;
     }
-    mono.show_board();
-
+    
     return 0;
 }
